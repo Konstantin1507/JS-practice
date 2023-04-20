@@ -1,0 +1,14 @@
+﻿#root {
+  padding: 20px;
+  width: 500px;
+  background-color: blanchedalmond;
+}
+
+.done {
+  text-decoration: line-through;
+  color: grey;
+}
+
+.none {
+  display: none;
+}
