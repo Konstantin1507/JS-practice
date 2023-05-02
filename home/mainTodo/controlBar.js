@@ -6,7 +6,7 @@ const controleBar = {
     this.control.id = 'control';
     this.control.classList.add('control');
     this.showHideControle();
-    main.append(this.control);
+    mainTodo.append(this.control);
 
     itemsLeft.createItemsLeft();
     createButtons();
