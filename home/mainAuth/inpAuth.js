@@ -1,12 +1,11 @@
 ﻿class InpAuth {
-  constructor(name, type, id, placeholder, userProp) {
+  constructor(name, type, id, placeholder, callback) {
     this.name = name;
     this.type = type;
     this.id = id;
     this.placeholder = placeholder;
+    this.callback = callback;
     this.value = '';
-    this.isCorrect = false;
-    this.userProp = userProp;
   }
   init() {
     let inp = document.createElement('input');
@@ -16,15 +15,7 @@
     inp.classList.add('inpAuth');
     inp.setAttribute('placeholder', this.placeholder);
 
-    inp.addEventListener('change', () => {
-      this.value = inp.value;
-      console.log(this.value);
-
-      if (this.value == this.userProp) {
-        this.isCorrect = true;
-      }
-      console.log(this);
-    });
+    inp.addEventListener('change', this.callback);
     return inp;
   }
   render(toEl) {

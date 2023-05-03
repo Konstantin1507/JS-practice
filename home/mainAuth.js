@@ -8,28 +8,36 @@
     'text',
     'loginInput',
     'Enter your login',
-    user.login
+    function () {
+      inputValues.loginInputValue = this.value;
+    }
   );
   let loginInputElem = loginInput.render(mainAuth);
-  console.log(loginInputElem);
 
   let passwordInput = new InpAuth(
     'passwordInput',
     'password',
     'passwordInput',
     'Enter your password',
-    user.password
+    function () {
+      inputValues.passwordInputValue = this.value;
+    }
   );
   let passwordInputElem = passwordInput.render(mainAuth);
-  console.log(passwordInputElem);
 
-  console.log(loginInput.isCorrect);
-  console.log(passwordInput.isCorrect);
-
-  createSubmitBtn();
+  let inputValues = {
+    loginInputValue: '',
+    passwordInputValue: '',
+  };
 
   function isChecked() {
-    console.log(loginInput.isCorrect);
-    console.log(passwordInput.isCorrect);
+    if (
+      inputValues.loginInputValue == user.login &&
+      inputValues.passwordInputValue == user.password
+    ) {
+      console.log('!!!!!!!!!!!!');
+    }
   }
+
+  createSubmitBtn(isChecked);
 }
