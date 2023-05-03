@@ -3,14 +3,33 @@
   mainAuth.id = 'mainAuth';
   main.append(mainAuth);
 
-  createInpAuth('loginInput', 'text', 'loginInput', 'Enter your login');
+  let loginInput = new InpAuth(
+    'loginInput',
+    'text',
+    'loginInput',
+    'Enter your login',
+    user.login
+  );
+  let loginInputElem = loginInput.render(mainAuth);
+  console.log(loginInputElem);
 
-  createInpAuth(
+  let passwordInput = new InpAuth(
     'passwordInput',
     'password',
     'passwordInput',
-    'Enter your password'
+    'Enter your password',
+    user.password
   );
+  let passwordInputElem = passwordInput.render(mainAuth);
+  console.log(passwordInputElem);
+
+  console.log(loginInput.isCorrect);
+  console.log(passwordInput.isCorrect);
 
   createSubmitBtn();
+
+  function isChecked() {
+    console.log(loginInput.isCorrect);
+    console.log(passwordInput.isCorrect);
+  }
 }
