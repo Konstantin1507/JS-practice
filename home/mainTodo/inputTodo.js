@@ -7,7 +7,7 @@ const inputTodo = {
     //todo input div
     const todoInputHolder = document.createElement('div');
     todoInputHolder.id = 'todoInputHolder';
-    main.append(todoInputHolder);
+    mainTodo.append(todoInputHolder);
 
     // todo input label + checkbox
     this.inputLabel.innerHTML = 'V';

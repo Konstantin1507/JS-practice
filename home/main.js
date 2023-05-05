@@ -1,10 +1,9 @@
 ﻿//MAIN SECTION
 function createMain() {
-  const main = document.createElement('section');
+  const main = document.createElement('main');
   main.id = 'main';
   root.append(main);
 
-  inputTodo.createInput();
-  createListElem();
-  controleBar.createControleBar();
+  createMainAuth();
+  // createMainTodo();
 }

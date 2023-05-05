@@ -1,7 +1,7 @@
 ﻿function createListElem() {
   const listElem = document.createElement('ul');
   listElem.id = 'listElem';
-  main.append(listElem);
+  mainTodo.append(listElem);
 
   //FILLING ARRAY of tasks
   if (localStorage.getItem('tasks')) {
