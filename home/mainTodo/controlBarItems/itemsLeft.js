@@ -3,7 +3,7 @@
 
   createItemsLeft() {
     const remain = document.createElement('div');
-    control.append(remain);
+    controlBar.append(remain);
 
     this.remainNumber.id = 'remainNumber';
     this.remainNumber.innerHTML = 0;

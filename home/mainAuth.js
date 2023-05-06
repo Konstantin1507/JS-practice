@@ -14,7 +14,6 @@
 
   let loginInput = new Input({...loginInputArgs});
   loginInput.render(mainAuth);
-  console.log(loginInput);
 
   let passwordInputArgs = {
     name: 'passwordInput',

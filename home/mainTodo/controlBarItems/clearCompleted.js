@@ -4,7 +4,7 @@ const clearCompletedButton = {
   createClearComplited() {
     const clearCompletedDiv = document.createElement('div');
     clearCompletedDiv.id = 'clearCompletedDiv';
-    control.append(clearCompletedDiv);
+    controlBar.append(clearCompletedDiv);
 
     const clearCompleted = document.createElement('button');
     clearCompleted.id = 'clearCompleted';
@@ -23,7 +23,7 @@ const clearCompletedButton = {
         }
       });
       localStorage.setItem('tasks', JSON.stringify(tasks));
-      controleBar.showHideControle();
+      // controleBar.showHideControle();
       this.showClearCompleted();
       if (tasks.length === 0) {
         inputTodo.inputLabel.classList.add('none');

@@ -35,7 +35,7 @@
   delBtn.innerHTML = 'X';
   divElem.append(delBtn);
 
-  controleBar.showHideControle();
+  // controleBar.showHideControle();
   itemsLeft.showItemsLeft();
   inputTodo.inputLabel.classList.remove('none');
   inputTodo.isAllChecked();

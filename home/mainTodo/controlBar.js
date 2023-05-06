@@ -1,23 +1,21 @@
 ﻿//CONTROL BAR - bottom buttons
 
-const controleBar = {
-  control: document.createElement('div'),
-  createControleBar() {
-    this.control.id = 'control';
-    this.control.classList.add('control');
-    this.showHideControle();
-    mainTodo.append(this.control);
+function createControleBar(state) {
+  const controlBar = document.createElement('div');
+  controlBar.id = 'controlBar';
+  controlBar.classList.add('controlBar');
+  // showHideControle();
+  mainTodo.append(controlBar);
 
-    itemsLeft.createItemsLeft();
-    createButtons();
-    clearCompletedButton.createClearComplited();
-  },
+  itemsLeft.createItemsLeft();
+  createButtons(state);
+  clearCompletedButton.createClearComplited();
 
-  showHideControle() {
-    if (tasks.length !== 0) {
-      this.control.classList.remove('hidden');
-    } else {
-      this.control.classList.add('hidden');
-    }
-  },
-};
+  // function showHideControle() {
+  //   if (tasks.length !== 0) {
+  //     this.control.classList.remove('hidden');
+  //   } else {
+  //     this.control.classList.add('hidden');
+  //   }
+  // }
+}
