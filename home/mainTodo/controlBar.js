@@ -1,15 +1,21 @@
 ﻿//CONTROL BAR - bottom buttons
 
-function createControleBar(state) {
-  const controlBar = document.createElement('div');
-  controlBar.id = 'controlBar';
-  controlBar.classList.add('controlBar');
-  // showHideControle();
-  mainTodo.append(controlBar);
+function createControleBar(
+  filterButtonsState,
+  clearCompletedState,
+  controleBarState
+) {
+  const controlBarDiv = document.createElement('div');
+  controlBarDiv.id = 'controlBar';
+  controlBarDiv.classList.add('controlBar');
+  mainTodo.append(controlBarDiv);
+
+  controleBarState.showHideControleFunc();
 
   itemsLeft.createItemsLeft();
-  createButtons(state);
-  clearCompletedButton.createClearComplited();
+
+  createButtons(filterButtonsState);
+  createClearComplited(clearCompletedState);
 
   // function showHideControle() {
   //   if (tasks.length !== 0) {

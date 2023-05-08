@@ -92,7 +92,7 @@ const inputTodo = {
 
     localStorage.setItem('tasks', JSON.stringify(tasks));
     itemsLeft.showItemsLeft();
-    clearCompletedButton.showClearCompleted();
+    showClearCompleted();
     this.isAllChecked();
   },
 };
