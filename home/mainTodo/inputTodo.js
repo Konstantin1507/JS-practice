@@ -57,7 +57,7 @@ const inputTodo = {
         tasks.push(task);
         localStorage.setItem('tasks', JSON.stringify(tasks));
 
-        createNewTask(task);
+        createNewTask(task, isAllChecked);
 
         todoInput.value = '';
       }
@@ -93,6 +93,6 @@ const inputTodo = {
     localStorage.setItem('tasks', JSON.stringify(tasks));
     itemsLeft.showItemsLeft();
     showClearCompleted();
-    this.isAllChecked();
+    isAllChecked();
   },
 };

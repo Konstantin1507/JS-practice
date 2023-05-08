@@ -69,7 +69,8 @@ function createMainTodo() {
     },
   };
 
-  inputTodo.createInput();
+  // inputTodo.createInput();
+  createInputTodo();
   createListElem();
   // let mainTodoState = {
   //   ...state,

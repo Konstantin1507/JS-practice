@@ -8,7 +8,9 @@ function createControleBar(
   const controlBarDiv = document.createElement('div');
   controlBarDiv.id = 'controlBar';
   controlBarDiv.classList.add('controlBar');
-  mainTodo.append(controlBarDiv);
+  mainTodo.insertAdjacentElement('afterend', controlBarDiv);
+
+  console.log(controleBarState);
 
   controleBarState.showHideControleFunc();
 
@@ -16,12 +18,4 @@ function createControleBar(
 
   createButtons(filterButtonsState);
   createClearComplited(clearCompletedState);
-
-  // function showHideControle() {
-  //   if (tasks.length !== 0) {
-  //     this.control.classList.remove('hidden');
-  //   } else {
-  //     this.control.classList.add('hidden');
-  //   }
-  // }
 }

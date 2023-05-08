@@ -45,7 +45,7 @@ function createMainTodo() {
 
   //ActiveTasks
   function buttonActiveHandler() {
-    tasks = tasks.filter((task) => {
+    tasks.forEach((task) => {
       const taskId = task.id;
       if (task.isDone === true) {
         document.getElementById(taskId).classList.add('none');
@@ -59,7 +59,7 @@ function createMainTodo() {
 
   //allTasks
   function buttonAllHandler() {
-    tasks = tasks.filter((task) => {
+    tasks.forEach((task) => {
       const taskId = task.id;
       if (document.getElementById(taskId).classList.contains('none')) {
         document.getElementById(taskId).classList.remove('none');
@@ -72,7 +72,7 @@ function createMainTodo() {
 
   //completedTasks
   function buttonCompletedHandler() {
-    tasks = tasks.filter((task) => {
+    tasks.forEach((task) => {
       const taskId = task.id;
       if (task.isDone !== true) {
         document.getElementById(taskId).classList.add('none');
@@ -86,6 +86,7 @@ function createMainTodo() {
 
   //clearCompleted
   function clearCompletedHandler() {
+    let inputLabel = document.querySelector('.inputLabel');
     tasks = tasks.filter((task) => {
       if (task.isDone !== true) {
         return true;
@@ -96,10 +97,10 @@ function createMainTodo() {
       }
     });
     localStorage.setItem('tasks', JSON.stringify(tasks));
-    // controleBar.showHideControle();
+    showHideControle();
     showClearCompleted();
     if (tasks.length === 0) {
-      inputTodo.inputLabel.classList.add('none');
+      inputLabel.classList.add('none');
     }
   }
   // showClearCompleted;
@@ -116,6 +117,7 @@ function createMainTodo() {
   function showHideControle() {
     let control = document.getElementById('controlBar');
     console.log(control);
+    console.log(tasks.length);
 
     if (tasks.length !== 0) {
       control.classList.remove('hidden');
@@ -124,7 +126,56 @@ function createMainTodo() {
     }
   }
 
-  inputTodo.createInput();
-  createListElem();
+  //isAllChecked
+  function isAllChecked() {
+    const doneTasks = tasks.filter((task) => task.isDone === true);
+    let inputLabel = document.querySelector('.inputLabel');
+    console.log(inputLabel);
+
+    if (tasks.length === doneTasks.length && tasks.length > 0) {
+      inputLabel.classList.add('all-checked');
+    } else {
+      inputLabel.classList.remove('all-checked');
+    }
+  }
+
+  //changeTaskStatus
+  function changeTaskStatus(taskId, elem) {
+    let label = elem.parentElement;
+    const span = label.nextElementSibling;
+
+    let task = tasks.find((task) => task.id === parseInt(taskId));
+    if (event.target.checked) {
+      task.isDone = true;
+      span.classList.add('done');
+      label.classList.add('label-checked');
+    } else if (event.target.checked == false) {
+      task.isDone = false;
+      span.classList.remove('done');
+      label.classList.remove('label-checked');
+    }
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    itemsLeft.showItemsLeft();
+    showClearCompleted();
+    isAllChecked();
+  }
+
+  let createInputTodoArgs = {
+    isAllChecked,
+    changeTaskStatus,
+    showHideControle,
+    showClearCompleted,
+  };
+
+  let createListElemArgs = {
+    isAllChecked,
+    changeTaskStatus,
+    showHideControle,
+    showClearCompleted,
+  };
+
   createControleBar(filterButtonsState, clearCompletedState, controleBarState);
+  createInputTodo(createInputTodoArgs);
+  createListElem(createListElemArgs);
 }
