@@ -3,6 +3,7 @@
     this.type = args.type;
     this.id = args.id;
     this.class = args.class;
+    this.classAdd = args.classAdd;
     this.innerHtml = args.innerHtml;
     this.onClick = args.onClick;
   }
@@ -12,6 +13,7 @@
     btn.type = this.type;
     btn.id = this.id;
     btn.classList.add(this.class);
+    btn.classList.add(this.classAdd);
     btn.innerHTML = this.innerHtml;
     btn.onclick = () => {
       this.onClick();

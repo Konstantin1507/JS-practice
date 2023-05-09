@@ -17,6 +17,7 @@
     inp.onchange = (event) => {
       this.onChange(event.target.value);
     };
+
     return inp;
   }
   render(toEl) {

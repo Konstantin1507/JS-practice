@@ -9,6 +9,7 @@ function createMainTodo() {
       type: 'button',
       id: 'active',
       class: 'control-button',
+      classAdd: null,
       innerHtml: 'Active',
       onClick: buttonActiveHandler,
     },
@@ -16,6 +17,7 @@ function createMainTodo() {
       type: 'button',
       id: 'all',
       class: 'control-button',
+      classAdd: 'activeButton',
       innerHtml: 'All',
       onClick: buttonAllHandler,
     },
@@ -23,6 +25,7 @@ function createMainTodo() {
       type: 'button',
       id: 'completed',
       class: 'control-button',
+      classAdd: null,
       innerHtml: 'Completed',
       onClick: buttonCompletedHandler,
     },
@@ -36,13 +39,35 @@ function createMainTodo() {
       innerHtml: 'Clear completed',
       onClick: clearCompletedHandler,
     },
-    showClearCompletedFunc: showClearCompleted,
+    showClearCompleted,
   };
 
   let controleBarState = {
-    showHideControleFunc: showHideControle,
+    showHideControle,
   };
 
+  let inputCheckboxState = {
+    inputCheckboxArgs: {
+      type: 'checkbox',
+      class: 'checkbox',
+      classAdd: null,
+      onClick: inputCheckboxHandler,
+    },
+  };
+
+  let todoInputState = {
+    todoInputArgs: {
+      name: 'todoInput',
+      type: 'text',
+      id: 'todoInput',
+      class: 'todo-validate-input',
+      placeholder: 'What needs to be done?',
+      onChange: emptyFunc,
+    },
+    todoInputElemHandler,
+  };
+
+  function emptyFunc() {}
   //ActiveTasks
   function buttonActiveHandler() {
     tasks.forEach((task) => {
@@ -158,11 +183,41 @@ function createMainTodo() {
     isAllChecked();
   }
 
+  //ИЗМЕНЕНИЕ СТАТУСА INPUT CHECKBOX and all checkboxes
+  function inputCheckboxHandler() {
+    let allCheckBoxes = document.querySelectorAll('.task-checkbox');
+
+    for (let checkBox of allCheckBoxes) {
+      const taskId = checkBox.closest('li').id;
+      changeTaskStatus(taskId, checkBox);
+    }
+  }
+
+  function todoInputElemHandler(event) {
+    if (event.keyCode === 13) {
+      if (todoInput.value == '') {
+        return;
+      }
+
+      const task = {
+        id: new Date().getTime(),
+        name: this.value,
+        isDone: false,
+      };
+
+      tasks.push(task);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+
+      createNewTask(task, isAllChecked, showHideControle);
+
+      this.value = '';
+    }
+  }
+
   let createInputTodoArgs = {
     isAllChecked,
-    changeTaskStatus,
-    showHideControle,
-    showClearCompleted,
+    inputCheckboxState,
+    todoInputState,
   };
 
   let createListElemArgs = {

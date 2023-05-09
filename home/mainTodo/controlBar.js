@@ -12,7 +12,7 @@ function createControleBar(
 
   console.log(controleBarState);
 
-  controleBarState.showHideControleFunc();
+  controleBarState.showHideControle();
 
   itemsLeft.createItemsLeft();
 
