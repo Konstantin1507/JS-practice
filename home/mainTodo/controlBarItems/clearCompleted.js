@@ -1,43 +1,12 @@
 ﻿//clearCompleted
 
-const clearCompletedButton = {
-  createClearComplited() {
-    const clearCompletedDiv = document.createElement('div');
-    clearCompletedDiv.id = 'clearCompletedDiv';
-    controlBar.append(clearCompletedDiv);
+function createClearComplited(args) {
+  const clearCompletedDiv = document.createElement('div');
+  clearCompletedDiv.id = 'clearCompletedDiv';
+  controlBar.append(clearCompletedDiv);
 
-    const clearCompleted = document.createElement('button');
-    clearCompleted.id = 'clearCompleted';
-    clearCompleted.innerHTML = 'Clear completed';
-    clearCompletedDiv.append(clearCompleted);
-    this.showClearCompleted();
+  const clearCompleted = new Button(args.clearCompletedArgs);
+  clearCompleted.render(clearCompletedDiv);
 
-    clearCompleted.addEventListener('click', () => {
-      tasks = tasks.filter((task) => {
-        if (task.isDone !== true) {
-          return true;
-        } else {
-          const taskId = task.id;
-          document.getElementById(taskId).remove();
-          return false;
-        }
-      });
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-      // controleBar.showHideControle();
-      this.showClearCompleted();
-      if (tasks.length === 0) {
-        inputTodo.inputLabel.classList.add('none');
-      }
-    });
-  },
-
-  // showClearCompleted;
-  showClearCompleted() {
-    const doneTasks = tasks.filter((task) => task.isDone === true);
-    if (doneTasks.length === 0) {
-      clearCompleted.innerHTML = '';
-    } else {
-      clearCompleted.innerHTML = 'Clear completed';
-    }
-  },
-};
+  args.showClearCompletedFunc();
+}

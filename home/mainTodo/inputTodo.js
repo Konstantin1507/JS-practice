@@ -1,98 +1,68 @@
 ﻿//INPUT
+function createInputTodo(createInputTodoArgs) {
+  console.log(createInputTodoArgs);
+  let {isAllChecked, changeTaskStatus, showHideControle, showClearCompleted} =
+    createInputTodoArgs;
 
-const inputTodo = {
-  inputLabel: document.createElement('label'),
+  //todo input div
+  const todoInputHolder = document.createElement('div');
+  todoInputHolder.id = 'todoInputHolder';
+  mainTodo.append(todoInputHolder);
 
-  createInput() {
-    //todo input div
-    const todoInputHolder = document.createElement('div');
-    todoInputHolder.id = 'todoInputHolder';
-    mainTodo.append(todoInputHolder);
+  // todo input label + checkbox
 
-    // todo input label + checkbox
-    this.inputLabel.innerHTML = 'V';
-    this.inputLabel.classList.add('inputLabel');
-    todoInputHolder.append(this.inputLabel);
-    const inputCheckbox = document.createElement('input');
-    inputCheckbox.type = 'checkbox';
-    inputCheckbox.classList.add('checkbox');
-    this.inputLabel.append(inputCheckbox);
-    if (tasks.length === 0) {
-      this.inputLabel.classList.add('none');
+  const inputLabel = document.createElement('label');
+  inputLabel.innerHTML = 'V';
+
+  inputLabel.classList.add('inputLabel');
+  todoInputHolder.append(inputLabel);
+  const inputCheckbox = document.createElement('input');
+  inputCheckbox.type = 'checkbox';
+  inputCheckbox.classList.add('checkbox');
+  inputLabel.append(inputCheckbox);
+  if (tasks.length === 0) {
+    inputLabel.classList.add('none');
+  }
+
+  isAllChecked();
+
+  //ИЗМЕНЕНИЕ СТАТУСА INPUT CHECKBOX and all checkboxes
+  inputCheckbox.addEventListener('click', () => {
+    let allCheckBoxes = document.querySelectorAll('.task-checkbox');
+
+    for (let checkBox of allCheckBoxes) {
+      const taskId = checkBox.closest('li').id;
+      changeTaskStatus(taskId, checkBox);
     }
-    this.isAllChecked();
+  });
 
-    //ИЗМЕНЕНИЕ СТАТУСА INPUT CHECKBOX and all checkboxes
-    inputCheckbox.addEventListener('click', () => {
-      let allCheckBoxes = document.querySelectorAll('.task-checkbox');
+  //todo input
+  const todoInput = document.createElement('input');
+  todoInput.type = 'text';
+  todoInput.id = 'todoInput';
+  todoInput.classList.add('todo-validate-input');
 
-      for (let checkBox of allCheckBoxes) {
-        const taskId = checkBox.closest('li').id;
-        this.changeTaskStatus(taskId, checkBox);
+  todoInput.setAttribute('placeholder', 'What needs to be done?');
+  todoInputHolder.append(todoInput);
+
+  todoInput.addEventListener('keypress', (event) => {
+    if (event.keyCode === 13) {
+      if (todoInput.value == '') {
+        return;
       }
-    });
 
-    //todo input
-    const todoInput = document.createElement('input');
-    todoInput.type = 'text';
-    todoInput.id = 'todoInput';
-    todoInput.classList.add('todo-validate-input');
+      const task = {
+        id: new Date().getTime(),
+        name: todoInput.value,
+        isDone: false,
+      };
 
-    todoInput.setAttribute('placeholder', 'What needs to be done?');
-    todoInputHolder.append(todoInput);
+      tasks.push(task);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
 
-    //input handler
-    todoInput.addEventListener('keypress', function (event) {
-      if (event.keyCode === 13) {
-        if (todoInput.value == '') {
-          return;
-        }
+      createNewTask(task, isAllChecked, showHideControle);
 
-        const task = {
-          id: new Date().getTime(),
-          name: todoInput.value,
-          isDone: false,
-        };
-
-        tasks.push(task);
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-
-        createNewTask(task, isAllChecked);
-
-        todoInput.value = '';
-      }
-    });
-  },
-
-  //isAllChecked
-  isAllChecked() {
-    const doneTasks = tasks.filter((task) => task.isDone === true);
-    if (tasks.length === doneTasks.length && tasks.length > 0) {
-      this.inputLabel.classList.add('all-checked');
-    } else {
-      this.inputLabel.classList.remove('all-checked');
+      todoInput.value = '';
     }
-  },
-
-  // changeTaskStatus
-  changeTaskStatus(taskId, elem) {
-    let label = elem.parentElement;
-    const span = label.nextElementSibling;
-
-    const task = tasks.find((task) => task.id === parseInt(taskId));
-    if (event.target.checked) {
-      task.isDone = true;
-      span.classList.add('done');
-      label.classList.add('label-checked');
-    } else if (event.target.checked == false) {
-      task.isDone = false;
-      span.classList.remove('done');
-      label.classList.remove('label-checked');
-    }
-
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    itemsLeft.showItemsLeft();
-    showClearCompleted();
-    isAllChecked();
-  },
-};
+  });
+}

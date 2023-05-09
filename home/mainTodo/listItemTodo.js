@@ -40,7 +40,6 @@
         localStorage.setItem('tasks', JSON.stringify(tasks));
         itemsLeft.showItemsLeft();
         showClearCompleted();
-        tyyyyyygg;
       }
       //обработчик BLUR
       taskName.addEventListener('blur', saveChanges);

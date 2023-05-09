@@ -116,8 +116,6 @@ function createMainTodo() {
   //showHideControle
   function showHideControle() {
     let control = document.getElementById('controlBar');
-    console.log(control);
-    console.log(tasks.length);
 
     if (tasks.length !== 0) {
       control.classList.remove('hidden');
@@ -130,7 +128,6 @@ function createMainTodo() {
   function isAllChecked() {
     const doneTasks = tasks.filter((task) => task.isDone === true);
     let inputLabel = document.querySelector('.inputLabel');
-    console.log(inputLabel);
 
     if (tasks.length === doneTasks.length && tasks.length > 0) {
       inputLabel.classList.add('all-checked');
