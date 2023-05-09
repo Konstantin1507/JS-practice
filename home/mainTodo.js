@@ -68,6 +68,13 @@ function createMainTodo() {
   };
 
   function emptyFunc() {}
+
+  //showItemsLeft
+  function showItemsLeft() {
+    const doneTasks = tasks.filter((task) => task.isDone === true);
+    this.remainNumber.innerHTML = tasks.length - doneTasks.length;
+  }
+
   //ActiveTasks
   function buttonActiveHandler() {
     tasks.forEach((task) => {
@@ -178,7 +185,7 @@ function createMainTodo() {
     }
 
     localStorage.setItem('tasks', JSON.stringify(tasks));
-    itemsLeft.showItemsLeft();
+    showItemsLeft();
     showClearCompleted();
     isAllChecked();
   }
@@ -208,7 +215,7 @@ function createMainTodo() {
       tasks.push(task);
       localStorage.setItem('tasks', JSON.stringify(tasks));
 
-      createNewTask(task, isAllChecked, showHideControle);
+      createNewTask(task, isAllChecked, showItemsLeft, showHideControle);
 
       this.value = '';
     }
@@ -218,6 +225,7 @@ function createMainTodo() {
     isAllChecked,
     inputCheckboxState,
     todoInputState,
+    showItemsLeft,
   };
 
   let createListElemArgs = {
@@ -225,6 +233,7 @@ function createMainTodo() {
     changeTaskStatus,
     showHideControle,
     showClearCompleted,
+    showItemsLeft,
   };
 
   createControleBar(filterButtonsState, clearCompletedState, controleBarState);

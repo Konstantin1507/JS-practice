@@ -10,12 +10,9 @@ function createControleBar(
   controlBarDiv.classList.add('controlBar');
   mainTodo.insertAdjacentElement('afterend', controlBarDiv);
 
-  console.log(controleBarState);
-
   controleBarState.showHideControle();
 
-  itemsLeft.createItemsLeft();
-
+  createItemsLeft();
   createButtons(filterButtonsState);
   createClearComplited(clearCompletedState);
 }

@@ -1,6 +1,11 @@
 ﻿function createListElem(createListElemArgs) {
-  let {isAllChecked, changeTaskStatus, showHideControle, showClearCompleted} =
-    createListElemArgs;
+  let {
+    isAllChecked,
+    changeTaskStatus,
+    showHideControle,
+    showItemsLeft,
+    showClearCompleted,
+  } = createListElemArgs;
   const listElem = document.createElement('ul');
   listElem.id = 'listElem';
   mainTodo.append(listElem);
@@ -8,7 +13,7 @@
   //FILLING ARRAY of tasks
   if (localStorage.getItem('tasks')) {
     tasks.map((task) => {
-      createNewTask(task, isAllChecked, showHideControle);
+      createNewTask(task, isAllChecked, showItemsLeft, showHideControle);
     });
   }
 
@@ -94,7 +99,7 @@
     document.getElementById(taskId).remove();
     showHideControle();
     showClearCompleted();
-    itemsLeft.showItemsLeft();
+    showItemsLeft();
     if (tasks.length === 0) {
       let inputLabel = document.querySelector('.inputLabel');
       inputLabel.classList.add('none');

@@ -1,4 +1,4 @@
-﻿function createNewTask(task, isAllChecked, showHideControle) {
+﻿function createNewTask(task, isAllChecked, showItemsLeft, showHideControle) {
   const newElem = document.createElement('li');
   newElem.classList.add('listElem-li');
   newElem.id = task.id;
@@ -36,7 +36,7 @@
   divElem.append(delBtn);
 
   showHideControle();
-  itemsLeft.showItemsLeft();
+  showItemsLeft();
   let inputLabel = document.querySelector('.inputLabel');
   inputLabel.classList.remove('none');
 
