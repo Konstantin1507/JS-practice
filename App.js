@@ -1,9 +1,26 @@
-﻿//ROOT
+﻿const root = document.getElementById('root');
 
-const root = document.getElementById('root');
+//HEADER
+let header = new Header();
+header.render(root);
 
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+const container = document.createElement('main');
+container.id = 'main';
+root.append(container);
 
-createHeader();
-createMain();
-createFooter();
+//AUTHENTIFICATION
+let login = new Authentific();
+login.render(container);
+
+// let home = new Home();
+// home.render(container);
+
+//FOOTER
+let footer = new Footer();
+footer.render(root);
+
+function renderApp() {
+  container.innerHTML = '';
+  let home = new Home();
+  home.render(container);
+}
