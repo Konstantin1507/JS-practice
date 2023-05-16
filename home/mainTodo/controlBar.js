@@ -1,23 +1,18 @@
 ﻿//CONTROL BAR - bottom buttons
 
-const controleBar = {
-  control: document.createElement('div'),
-  createControleBar() {
-    this.control.id = 'control';
-    this.control.classList.add('control');
-    this.showHideControle();
-    mainTodo.append(this.control);
+function createControleBar(
+  filterButtonsState,
+  clearCompletedState,
+  controleBarState
+) {
+  const controlBarDiv = document.createElement('div');
+  controlBarDiv.id = 'controlBar';
+  controlBarDiv.classList.add('controlBar');
+  mainTodo.insertAdjacentElement('afterend', controlBarDiv);
 
-    itemsLeft.createItemsLeft();
-    createButtons();
-    clearCompletedButton.createClearComplited();
-  },
+  controleBarState.showHideControle();
 
-  showHideControle() {
-    if (tasks.length !== 0) {
-      this.control.classList.remove('hidden');
-    } else {
-      this.control.classList.add('hidden');
-    }
-  },
-};
+  createItemsLeft();
+  createButtons(filterButtonsState);
+  createClearComplited(clearCompletedState);
+}

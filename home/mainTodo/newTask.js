@@ -1,4 +1,4 @@
-﻿function createNewTask(task) {
+﻿function createNewTask(task, isAllChecked, showItemsLeft, showHideControle) {
   const newElem = document.createElement('li');
   newElem.classList.add('listElem-li');
   newElem.id = task.id;
@@ -35,8 +35,10 @@
   delBtn.innerHTML = 'X';
   divElem.append(delBtn);
 
-  controleBar.showHideControle();
-  itemsLeft.showItemsLeft();
-  inputTodo.inputLabel.classList.remove('none');
-  inputTodo.isAllChecked();
+  showHideControle();
+  showItemsLeft();
+  let inputLabel = document.querySelector('.inputLabel');
+  inputLabel.classList.remove('none');
+
+  isAllChecked();
 }

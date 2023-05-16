@@ -1,43 +1,48 @@
-﻿function createMainAuth() {
+﻿function createMainAuth(onChangeMain, onClickMain) {
   const mainAuth = document.createElement('section');
   mainAuth.id = 'mainAuth';
   main.append(mainAuth);
 
-  let loginInput = new InpAuth(
-    'loginInput',
-    'text',
-    'loginInput',
-    'Enter your login',
-    function () {
-      inputValues.loginInputValue = this.value;
-    }
-  );
-  let loginInputElem = loginInput.render(mainAuth);
-
-  let passwordInput = new InpAuth(
-    'passwordInput',
-    'password',
-    'passwordInput',
-    'Enter your password',
-    function () {
-      inputValues.passwordInputValue = this.value;
-    }
-  );
-  let passwordInputElem = passwordInput.render(mainAuth);
-
-  let inputValues = {
-    loginInputValue: '',
-    passwordInputValue: '',
+  let loginInputArgs = {
+    name: 'loginInput',
+    type: 'text',
+    id: 'loginInput',
+    class: 'inpAuth',
+    placeholder: 'Enter your login',
+    onChange: onChageParent,
   };
 
-  function isChecked() {
-    if (
-      inputValues.loginInputValue == user.login &&
-      inputValues.passwordInputValue == user.password
-    ) {
-      console.log('!!!!!!!!!!!!');
-    }
+  let loginInput = new Input({...loginInputArgs});
+  loginInput.render(mainAuth);
+
+  let passwordInputArgs = {
+    name: 'passwordInput',
+    type: 'password',
+    id: 'passwordInput',
+    class: 'inpAuth',
+    placeholder: 'Enter your password',
+    onChange: onChageParent,
+  };
+
+  let passwordInput = new Input({...passwordInputArgs});
+  passwordInput.render(mainAuth);
+
+  function onChageParent(value) {
+    onChangeMain(value);
   }
 
-  createSubmitBtn(isChecked);
+  let authorizButtonArgs = {
+    type: 'button',
+    id: 'submitBtn',
+    class: 'authBtn',
+    innerHtml: 'SUBMIT',
+    onClick: onClickParent,
+  };
+
+  let authorizButton = new Button({...authorizButtonArgs});
+  authorizButton.render(mainAuth);
+
+  function onClickParent() {
+    onClickMain();
+  }
 }

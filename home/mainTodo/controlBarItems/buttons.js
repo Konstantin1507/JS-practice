@@ -1,8 +1,8 @@
 ﻿//buttons
-function createButtons() {
+function createButtons(state) {
   const buttons = document.createElement('ul');
   buttons.id = 'buttons';
-  control.append(buttons);
+  controlBar.append(buttons);
 
   //ИЗМЕНЕНИЕ АКТИВОСТИ КНОПКИ
   buttons.addEventListener('click', function () {
@@ -16,7 +16,7 @@ function createButtons() {
       }
     }
   });
-  createButtonAll();
-  createButtonActive();
-  createButtonCompleted();
+  createButtonAll(state.buttonAllArgs);
+  createButtonActive(state.buttonActiveArgs);
+  createButtonCompleted(state.buttonCompletedArgs);
 }

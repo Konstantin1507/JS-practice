@@ -1,4 +1,11 @@
-﻿function createListElem() {
+﻿function createListElem(createListElemArgs) {
+  let {
+    isAllChecked,
+    changeTaskStatus,
+    showHideControle,
+    showItemsLeft,
+    showClearCompleted,
+  } = createListElemArgs;
   const listElem = document.createElement('ul');
   listElem.id = 'listElem';
   mainTodo.append(listElem);
@@ -6,7 +13,7 @@
   //FILLING ARRAY of tasks
   if (localStorage.getItem('tasks')) {
     tasks.map((task) => {
-      createNewTask(task);
+      createNewTask(task, isAllChecked, showItemsLeft, showHideControle);
     });
   }
 
@@ -37,7 +44,7 @@
 
         localStorage.setItem('tasks', JSON.stringify(tasks));
         itemsLeft.showItemsLeft();
-        clearCompletedButton.showClearCompleted();
+        showClearCompleted();
       }
       //обработчик BLUR
       taskName.addEventListener('blur', saveChanges);
@@ -82,7 +89,7 @@
     if (event.target.classList.contains('delete')) {
       const taskId = event.target.closest('li').id;
       removeTask(taskId);
-      inputTodo.isAllChecked();
+      isAllChecked();
     }
   });
 
@@ -90,11 +97,12 @@
     tasks = tasks.filter((task) => task.id !== +taskId);
     localStorage.setItem('tasks', JSON.stringify(tasks));
     document.getElementById(taskId).remove();
-    controleBar.showHideControle();
-    clearCompletedButton.showClearCompleted();
-    itemsLeft.showItemsLeft();
+    showHideControle();
+    showClearCompleted();
+    showItemsLeft();
     if (tasks.length === 0) {
-      inputTodo.inputLabel.classList.add('none');
+      let inputLabel = document.querySelector('.inputLabel');
+      inputLabel.classList.add('none');
     }
   }
 
@@ -102,7 +110,7 @@
   listElem.addEventListener('click', (event) => {
     if (event.target.classList.contains('checkbox')) {
       const taskId = event.target.closest('li').id;
-      inputTodo.changeTaskStatus(taskId, event.target);
+      changeTaskStatus(taskId, event.target);
     }
   });
 }
