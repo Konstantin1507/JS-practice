@@ -1,26 +1,29 @@
 ﻿class Button {
   constructor(args) {
+    this.btn = document.createElement('button');
     this.type = args.type;
     this.id = args.id;
-    this.class = args.class;
-    this.classAdd = args.classAdd;
+    this.classes = args.classes;
     this.innerHtml = args.innerHtml;
     this.onClick = args.onClick;
+    this.toListen = args.toListen;
+    this.init();
   }
 
   init() {
-    let btn = document.createElement('button');
-    btn.type = this.type;
-    btn.id = this.id;
-    btn.classList.add(this.class);
-    btn.classList.add(this.classAdd);
-    btn.innerHTML = this.innerHtml;
-    btn.onclick = () => {
+    this.btn = document.createElement('button');
+    this.btn.type = this.type;
+    this.btn.id = this.id;
+    this.classes.forEach((className) => {
+      this.btn.classList.add(className);
+    });
+    this.btn.innerHTML = this.innerHtml;
+    this.btn.onclick = () => {
+      this.toListen();
       this.onClick();
     };
-    return btn;
   }
   render(toEl) {
-    toEl.append(this.init());
+    toEl.append(this.btn);
   }
 }

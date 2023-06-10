@@ -1,57 +1,57 @@
 ﻿class Home {
   constructor() {
-    //MAIN SECTION
-    this.main = document.createElement('section');
-    this.main.id = 'main';
-    // container.append(main);
-
-    //creating ARRAY of tasks
     this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-    //INPUT
-    //todo input div
-    this.todoInputHolder = document.createElement('div');
-    this.todoInputHolder.id = 'todoInputHolder';
-    this.main.append(this.todoInputHolder);
+    this.allTasksDone = false;
+    this.init();
+  }
 
-    // todo input label + checkbox
+  init() {
+    this.homePageContainer = document.createElement('section');
+    this.homePageContainer.id = 'homePageContainer';
+
+    //INPUT
+    this.taskInputWrapper = document.createElement('div');
+    this.taskInputWrapper.id = 'taskInputWrapper';
+    this.homePageContainer.append(this.taskInputWrapper);
+
     this.inputLabel = document.createElement('label');
     this.inputLabel.innerHTML = 'V';
     this.inputLabel.classList.add('inputLabel');
-    this.todoInputHolder.append(this.inputLabel);
+    this.taskInputWrapper.append(this.inputLabel);
 
-    this.inputCheckboxArgs = {
+    this.inputCheckbox = new Checkbox({
       type: 'checkbox',
       class: 'checkbox',
       classAdd: null,
       isChecked: false,
       onClick: this.inputCheckboxHandler,
-    };
-    this.inputCheckbox = new Checkbox(this.inputCheckboxArgs);
-    this.inputCheckbox.render(this.inputLabel);
+    });
 
-    this.hideInputLabel();
-    this.isAllChecked();
-
-    //todo input
-    this.todoInputArgs = {
-      name: 'todoInput',
+    this.taskInput = new Input({
+      name: 'taskInput',
       type: 'text',
-      id: 'todoInput',
+      id: 'taskInput',
       class: 'todo-validate-input',
       placeholder: 'What needs to be done?',
       onChange: null,
-      onKeydown: this.todoInputElemHandler,
-    };
+      onKeydown: this.taskInputHandler,
+    });
 
-    this.todoInput = new Input(this.todoInputArgs);
-    console.log(this.todoInput);
-    this.todoInput.render(this.todoInputHolder);
-
-    //UL - list
     this.listElem = document.createElement('ul');
     this.listElem.id = 'listElem';
-    this.main.append(this.listElem);
+    this.homePageContainer.append(this.listElem);
+  }
+
+  render(toEl) {
+    toEl.append(this.homePageContainer);
+
+    this.inputCheckbox.render(this.inputLabel);
+
+    // this.hideInputLabel();
+    // this.isAllChecked();
+
+    this.taskInput.render(this.taskInputWrapper);
 
     //ИЗМЕНЕНИЕ СТАТУСА
     this.listElem.addEventListener('click', (event) => {
@@ -61,92 +61,14 @@
       }
     });
 
-    //CONTROL - bottoms
-    this.control = document.createElement('div');
-    this.control.classList.add('control');
-    this.showHideControle();
-    this.main.append(this.control);
-
-    //items left
-    this.remain = document.createElement('div');
-    this.control.append(this.remain);
-    this.remainNumber = document.createElement('span');
-    this.remainNumber.id = 'remainNumber';
-    this.remainNumber.innerHTML = 0;
-    this.remain.append(this.remainNumber);
-    this.remainText = document.createElement('span');
-    this.remainText.innerHTML = ' items left';
-    this.remain.append(this.remainText);
-
-    //buttons
-    this.buttons = document.createElement('ul');
-    this.buttons.id = 'buttons';
-    this.control.append(this.buttons);
-
-    this.buttonAllArgs = {
-      type: 'button',
-      id: 'all',
-      class: 'control-button',
-      classAdd: 'activeButton',
-      innerHtml: 'All',
-      onClick: this.buttonAllHandler,
-    };
-    this.li1 = document.createElement('li');
-    this.buttons.append(this.li1);
-    this.buttonAll = new Button(this.buttonAllArgs);
-    this.buttonAll.render(this.li1);
-
-    this.buttonActiveArgs = {
-      type: 'button',
-      id: 'active',
-      class: 'control-button',
-      classAdd: null,
-      innerHtml: 'Active',
-      onClick: this.buttonActiveHandler,
-    };
-    this.li2 = document.createElement('li');
-    this.buttons.append(this.li2);
-    this.buttonActive = new Button(this.buttonActiveArgs);
-    this.buttonActive.render(this.li2);
-
-    this.buttonCompletedArgs = {
-      type: 'button',
-      id: 'completed',
-      class: 'control-button',
-      classAdd: null,
-      innerHtml: 'Completed',
-      onClick: this.buttonCompletedHandler,
-    };
-    this.li3 = document.createElement('li');
-    this.buttons.append(this.li3);
-    this.buttonCompleted = new Button(this.buttonCompletedArgs);
-    this.buttonCompleted.render(this.li3);
-
-    //clearCompleted
-    this.clearCompletedArgs = {
-      type: 'button',
-      id: 'clearCompleted',
-      class: 'clearCompleted',
-      innerHtml: 'Clear completed',
-      onClick: this.clearCompletedHandler,
-    };
-    this.clearCompletedArgsInvisible = {
-      type: 'button',
-      id: 'clearCompleted',
-      class: 'clearCompleted',
-      innerHtml: '',
-      onClick: this.clearCompletedHandler,
-    };
-    this.clearCompletedDiv = document.createElement('div');
-    this.clearCompletedDiv.id = 'clearCompletedDiv';
-    this.control.append(this.clearCompletedDiv);
-    this.renderClearCompleted();
+    this.menuWrapper = document.createElement('div');
+    this.menuWrapper.id = 'menuWrapper';
+    this.homePageContainer.append(this.menuWrapper);
 
     //FILLING ARRAY of tasks
     if (localStorage.getItem('tasks')) {
-      this.tasks.map((task) => {
-        this.createNewTask(task);
-      });
+      this.renderListElem(this.tasks);
+      this.renderMenu();
     }
 
     //РЕДАКТИРОВАНИЕ ТАСКИ
@@ -179,100 +101,21 @@
     // УДАЛЕНИЕ ТАСКИ
     this.listElem.addEventListener('click', (event) => {
       if (event.target.classList.contains('delete')) {
-        const taskId = event.target.closest('li').id;
+        let taskId = event.target.closest('li').id;
         this.removeTask(taskId);
-        this.isAllChecked();
-      }
-    });
-
-    //ИЗМЕНЕНИЕ АКТИВОСТИ КНОПКИ
-    this.buttons.addEventListener('click', function () {
-      const buttons = document.querySelectorAll('.control-button');
-
-      for (let button of buttons) {
-        if (button === event.target) {
-          button.classList.add('activeButton');
-        } else {
-          button.classList.remove('activeButton');
-        }
+        // this.isAllChecked();
       }
     });
   }
 
   //METHODS
-
-  //createNewTask
-  createNewTask(task) {
-    //li
-    this.newElem = document.createElement('li');
-    this.newElem.classList.add('listElem-li');
-    this.newElem.id = task.id;
-    this.listElem.append(this.newElem);
-
-    //div
-    this.divElem = document.createElement('div');
-    this.divElem.classList.add('listElem-div');
-    this.newElem.append(this.divElem);
-
-    //label + checkbox
-    this.label = document.createElement('label');
-    this.label.innerHTML = 'V';
-    this.label.classList.add('label');
-    this.divElem.append(this.label);
-
-    //Args
-    this.newTaskCheckboxArgs = {
-      type: 'checkbox',
-      class: 'checkbox',
-      classAdd: 'task-checkbox',
-      isChecked: true,
-      onClick: this.toggleCheckbox,
-    };
-    this.newTaskCheckboxArgsUncheck = {
-      type: 'checkbox',
-      class: 'checkbox',
-      classAdd: 'task-checkbox',
-      isChecked: false,
-      onClick: this.toggleCheckbox,
-    };
-    if (task.isDone === true) {
-      this.label.classList.add('label-checked');
-      this.newTaskCheckbox = new Checkbox(this.newTaskCheckboxArgs);
-      this.newTaskCheckbox.render(this.label);
-    } else {
-      this.newTaskCheckbox = new Checkbox(this.newTaskCheckboxArgsUncheck);
-      this.newTaskCheckbox.render(this.label);
-    }
-    //span
-    this.taskName = document.createElement('span');
-    this.taskName.classList.add('task');
-    this.taskName.innerHTML = task.name;
-    this.divElem.append(this.taskName);
-    if (task.isDone) {
-      this.taskName.classList.add('done');
-    }
-    //delete button
-    this.delBtn = document.createElement('button');
-    this.delBtn.classList.add('delete');
-    this.delBtn.innerHTML = 'X';
-    this.divElem.append(this.delBtn);
-
-    this.showHideControle();
-    this.showItemsLeft();
-    this.inputLabel.classList.remove('none');
-    this.isAllChecked();
-  }
-
   //toggleCheckbox
   toggleCheckbox() {
     this.isChecked = !this.isChecked;
-    console.log(
-      `Checkbox ' is now ${this.isChecked ? 'checked' : 'unchecked'}`
-    );
   }
 
   //input handler
-  todoInputElemHandler = (event) => {
+  taskInputHandler = (event) => {
     if (event.keyCode === 13) {
       if (event.target.value == '') {
         return;
@@ -285,8 +128,10 @@
       };
       this.tasks.push(task);
       localStorage.setItem('tasks', JSON.stringify(this.tasks));
-      this.createNewTask(task);
+
       event.target.value = '';
+      this.renderListElem(this.tasks);
+      this.renderMenu();
     }
   };
   //ИЗМЕНЕНИЕ СТАТУСА INPUT CHECKBOX and all
@@ -316,20 +161,15 @@
     }
 
     localStorage.setItem('tasks', JSON.stringify(this.tasks));
-    this.showItemsLeft();
-    this.showClearCompleted();
-    this.isAllChecked();
+    this.renderMenu();
   }
 
   //removeTask
   removeTask(taskId) {
     this.tasks = this.tasks.filter((task) => task.id !== +taskId);
     localStorage.setItem('tasks', JSON.stringify(this.tasks));
-    document.getElementById(taskId).remove();
-    this.showHideControle();
-    this.showClearCompleted();
-    this.showItemsLeft();
-    this.hideInputLabel();
+    this.renderListElem(this.tasks);
+    this.renderMenu();
   }
 
   //changeTask
@@ -338,8 +178,6 @@
     task.name = elem.innerHTML;
 
     localStorage.setItem('tasks', JSON.stringify(this.tasks));
-    this.showItemsLeft();
-    this.showClearCompleted();
   }
 
   reduct = () => {
@@ -378,65 +216,50 @@
 
   //itemsLeft
   showItemsLeft() {
-    const doneTasks = this.tasks.filter((task) => task.isDone === true);
-    this.remainNumber.innerHTML = this.tasks.length - doneTasks.length;
+    const doneTasks = this.tasks.filter((task) => !task.isDone);
+    this.remainNumber.innerHTML = doneTasks.length;
   }
 
   //clearCompleted
   clearCompletedHandler = () => {
     this.tasks = this.tasks.filter((task) => task.isDone !== true);
-    this.listElem.innerHTML = '';
-    this.renderListElem(this.tasks);
-
     localStorage.setItem('tasks', JSON.stringify(this.tasks));
-    this.showHideControle();
-    this.showClearCompleted();
-    this.hideInputLabel();
-  };
 
-  //howClearCompleted
-  showClearCompleted() {
-    this.clearCompletedDiv.innerHTML = '';
-    this.renderClearCompleted();
-  }
-
-  //renderClearCompleted
-  renderClearCompleted() {
-    const doneTasks = this.tasks.filter((task) => task.isDone === true);
-    if (doneTasks.length === 0) {
-      let clearCompleted = new Button(this.clearCompletedArgsInvisible);
-      clearCompleted.render(this.clearCompletedDiv);
-    } else {
-      let clearCompleted = new Button(this.clearCompletedArgs);
-      clearCompleted.render(this.clearCompletedDiv);
-    }
-  }
-
-  //activeTasks
-  buttonActiveHandler = () => {
-    let visibletasks = this.tasks.filter((task) => task.isDone === false);
-    this.listElem.innerHTML = '';
-    this.renderListElem(visibletasks);
+    this.renderListElem(this.tasks);
+    this.renderMenu();
   };
 
   //allTasks
   buttonAllHandler = () => {
     let visibletasks = this.tasks;
-    this.listElem.innerHTML = '';
+    this.renderListElem(visibletasks);
+  };
+
+  //activeTasks
+  buttonActiveHandler = () => {
+    let visibletasks = this.tasks.filter((task) => task.isDone === false);
     this.renderListElem(visibletasks);
   };
 
   //completedTasks
   buttonCompletedHandler = () => {
     let visibletasks = this.tasks.filter((task) => task.isDone);
-    this.listElem.innerHTML = '';
     this.renderListElem(visibletasks);
   };
 
   //renderListElem
   renderListElem(visibletasks) {
+    this.listElem.innerHTML = '';
     visibletasks.map((task) => {
-      this.createNewTask(task);
+      this.newTask = new NewTask(
+        task,
+        this.listElem,
+        // this.renderMenu,
+        this.inputLabel,
+        this.isAllChecked,
+        this.toggleCheckbox
+      );
+      this.newTask.render(this.listElem);
     });
   }
 
@@ -447,25 +270,32 @@
     }
   }
 
-  //showHideControle
-  showHideControle() {
+  renderMenu = () => {
+    this.menuWrapper.innerHTML = '';
     if (this.tasks.length !== 0) {
-      this.control.classList.remove('hidden');
-    } else {
-      this.control.classList.add('hidden');
-    }
-  }
-  //
+      this.menu = new Menu({
+        buttonAllHandler: this.buttonAllHandler,
+        buttonActiveHandler: this.buttonActiveHandler,
+        buttonCompletedHandler: this.buttonCompletedHandler,
+        clearCompletedHandler: this.clearCompletedHandler,
+        showItemsLeft: this.showItemsLeft,
+        tasks: this.tasks,
+      });
+      this.menu.render(this.menuWrapper);
+    } else return;
+  };
+
   //isAllChecked
-  isAllChecked() {
-    const doneTasks = this.tasks.filter((task) => task.isDone === true);
-    if (this.tasks.length === doneTasks.length && this.tasks.length > 0) {
-      this.inputLabel.classList.add('all-checked');
-    } else {
-      this.inputLabel.classList.remove('all-checked');
-    }
-  }
-  render(toEl) {
-    toEl.append(this.main);
-  }
+  isAllChecked = () => {
+    console.log('isAllChecked');
+  };
+
+  // isAllChecked = () => {
+  //   const doneTasks = this.tasks.filter((task) => task.isDone === true);
+  //   if (this.tasks.length === doneTasks.length && this.tasks.length > 0) {
+  //     this.inputLabel.classList.add('all-checked');
+  //   } else {
+  //     this.inputLabel.classList.remove('all-checked');
+  //   }
+  // };
 }

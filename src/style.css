@@ -37,7 +37,7 @@ body {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
 }
 
-#todoInputHolder {
+#taskInputWrapper {
   position: relative;
   padding-left: 60px;
 }
@@ -231,7 +231,7 @@ body {
   border: none;
 }
 
-.control {
+.menu {
   padding: 0 5px 0 5px;
   display: flex;
   color: #777;
@@ -268,7 +268,7 @@ button {
   cursor: pointer;
 }
 
-.control-button:hover {
+.menu-button:hover {
   border: 1px solid rgba(175, 47, 47, 0.25);
   transition: all 0.2s ease-out;
 }

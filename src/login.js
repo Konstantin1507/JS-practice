@@ -1,75 +1,74 @@
-﻿class Authentific {
-  constructor() {
-    this.authentification = document.createElement('section');
-    this.authentification.id = 'authentification';
+class Login {
+  constructor(props) {
+    this.containerEl = props.containerEl;
+    this.onLoginSuccess = props.onLoginSuccess;
 
     this.inputValues = {
       loginInputValue: '',
       passwordInputValue: '',
     };
 
-    //loginInput
-    this.loginInputArgs = {
+    this.init();
+  }
+
+  init() {
+    this.loginPageContainer = document.createElement('section');
+    this.loginPageContainer.id = 'loginPage';
+
+    this.loginInput = new Input({
       name: 'loginInput',
       type: 'text',
       id: 'loginInput',
       class: 'inpAuth',
       placeholder: 'Enter your login',
-      onChange: this.loginInputHandler,
-    };
-    this.loginInput = new Input({...this.loginInputArgs});
-    this.loginInput.render(this.authentification);
+      onChange: this.handleEmailChange,
+    });
 
-    //passwordInput
-    this.passwordInputArgs = {
+    this.passwordInput = new Input({
       name: 'passwordInput',
       type: 'password',
       id: 'passwordInput',
       class: 'inpAuth',
       placeholder: 'Enter your password',
       onChange: this.passwordInputHandler,
-    };
-    this.passwordInput = new Input({...this.passwordInputArgs});
-    this.passwordInput.render(this.authentification);
+    });
 
-    //authorizButton
-    this.authorizButtonArgs = {
+    this.authorizeButton = new Button({
       type: 'button',
       id: 'submitBtn',
-      class: 'authBtn',
+      classes: ['authBtn'],
       innerHtml: 'SUBMIT',
-      onClick: this.authorizButtonHandler,
-    };
-    this.authorizButton = new Button({...this.authorizButtonArgs});
-    this.authorizButton.render(this.authentification);
+      onClick: this.authorizeButtonHandler,
+    });
   }
-  //METHODS
 
-  //INPUT LOGIN
-  loginInputHandler = (event) => {
+  handleEmailChange = (event) => {
     this.inputValues.loginInputValue = event.target.value;
-    console.log(this.inputValues);
   };
 
-  //INPUT PASSWORD
   passwordInputHandler = (event) => {
     this.inputValues.passwordInputValue = event.target.value;
-    console.log(this.inputValues);
   };
 
-  //BUTTON SUBMIT
-  authorizButtonHandler = () => {
-    if (
+  authorizeButtonHandler = () => {
+    const isAuthenticated =
       user.login === this.inputValues.loginInputValue &&
-      user.password == this.inputValues.passwordInputValue
-    ) {
-      user.isAuthenticated = true;
-      renderApp();
-    } else return;
+      user.password == this.inputValues.passwordInputValue;
+
+    if (!isAuthenticated) {
+      return;
+    }
+    user.isAuthenticated = true;
+
+    this.onLoginSuccess();
   };
 
-  //RENDER
-  render(toEl) {
-    toEl.append(this.authentification);
+  render() {
+    let toEl = this.containerEl;
+    this.loginInput.render(this.loginPageContainer);
+    this.passwordInput.render(this.loginPageContainer);
+    this.authorizeButton.render(this.loginPageContainer);
+
+    toEl.append(this.loginPageContainer);
   }
 }

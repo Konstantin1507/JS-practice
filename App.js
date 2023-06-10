@@ -1,26 +1,43 @@
-﻿const root = document.getElementById('root');
+class App {
+  constructor() {
+    this.init();
+  }
 
-//HEADER
-let header = new Header();
-header.render(root);
+  init() {
+    this.header = new Header();
 
-const container = document.createElement('main');
-container.id = 'main';
-root.append(container);
+    this.container = document.createElement('main');
+    this.container.id = 'main';
 
-//AUTHENTIFICATION
-let login = new Authentific();
-login.render(container);
+    this.loginPage = new Login({
+      onLoginSuccess: this.renderPage,
+      containerEl: this.container,
+    });
 
-// let home = new Home();
-// home.render(container);
+    this.homePage = new Home();
+    this.footer = new Footer();
+  }
 
-//FOOTER
-let footer = new Footer();
-footer.render(root);
+  render(root) {
+    this.header.render(root);
+    root.append(this.container);
+    this.footer.render(root);
 
-function renderApp() {
-  container.innerHTML = '';
-  let home = new Home();
-  home.render(container);
+    this.renderPage();
+  }
+
+  // renderPage = () => {
+  //   this.container.innerHTML = '';
+  //   if (!user.isAuthenticated) {
+  //     this.loginPage.render({
+  //       // onLoginSuccess: this.render,
+  //       // containerEl: this.container,
+  //     });
+  //   } else {
+  //     this.homePage.render(this.container);
+  //   }
+  // };
+  renderPage = () => {
+    this.homePage.render(this.container);
+  };
 }
